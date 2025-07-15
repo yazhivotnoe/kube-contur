@@ -1,0 +1,9 @@
+---
+- name: Install HA on control nodes
+  hosts: k8s_masters
+  roles:
+  # get ip from v4_cidr_blocks = ["10.0.11.0/24"] in vm subnet, from 10.0.11.3 to 10.0.11.254 ( 0 - network adress, 1 - gateway, 2 - mb use in cloud service, 255 - broadcast address)
+  - role: ha
+    vars:
+      ha_cluster_virtual_ip: 10.0.11.222
+      ha_cluster_virtual_port: 7443

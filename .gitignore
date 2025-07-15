@@ -1,0 +1,8 @@
+key.json
+_provider.tf
+_backend.tf
+.terraform
+**/*.hcl.tf
+env.hcl
+.terraform*
+**/.terragrunt-cache
