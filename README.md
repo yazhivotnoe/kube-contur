@@ -192,3 +192,4 @@ terragrunt run --all destroy
 - can setup rbacs, network policy
 - environments setup
 - hardeding OS
+- etc...
