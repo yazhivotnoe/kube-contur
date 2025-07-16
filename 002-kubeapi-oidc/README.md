@@ -7,7 +7,9 @@ groups
   - default
   - include in token scoup ON
   mappers:
-    - groups ( add -> Configure -> Group memberships -> groups ) | full group path OFF ( что бы не было вложенности )
+    - groups ( add -> Configure -> Group memberships -> groups ) | Full group path OFF ( so that there is no nesting )
+      - name: groups
+      - token claim name: groups
 
 
 ### Add oidc setting for kube-api
