@@ -159,19 +159,36 @@ systemctl restart kubelet && sleep 5 && systemctl status kubelet --no-page
 
 ### Deploy metrics service for correclty HPA works
 
+- prepare terragrunt
 ```bash
-terragrunt run --all $(for d in base/*; do echo --queue-include-dir "$d"; done) plan && terragrunt run --all $(for d in base/*; do echo --queue-include-dir "$d"; done) apply
+cd 001-terragrunt
+cat >> env.hcl <<EOF
+locals {
+  yandex_access_key = "XXXX"
+  yandex_secret_key = "XXXX"
+}
+EOF
+```
+
+```bash
+export DIR=base
+terragrunt run --all $(for d in "${DIR}/*"; do echo --queue-include-dir "$d"; done) plan 
+terragrunt run --all $(for d in "${DIR}/*"; do echo --queue-include-dir "$d"; done) apply
+unset DIR
 ```
 
 ### Deploy env
 
 - point env
 ```bash
-terragrunt run --all $(for d in dev/*; do echo --queue-include-dir "$d"; done) plan && terragrunt run --all $(for d in dev/*; do echo --queue-include-dir "$d"; done) apply
+export DIR=dev && \
+  terragrunt run --all $(for d in "${DIR}/*"; do echo --queue-include-dir "$d"; done) plan && \
+  terragrunt run --all $(for d in "${DIR}/*"; do echo --queue-include-dir "$d"; done) apply && \
+  unset DIR
 ```
 - all env exclude base component
 ```bash
-terragrunt run --all $(for d in base/*; do echo --queue-exclude-dir "$d"; done) plan && terragrunt run --all $(for d in base/*; do echo --queue-exclude-dir "$d"; done) apply
+export DIR=base && terragrunt run --all $(for d in "${DIR}/*"; do echo --queue-exclude-dir "$d"; done) plan && terragrunt run --all $(for d in "${DIR}/*"; do echo --queue-exclude-dir "$d"; done) apply && unset DIR
 ```
 
 - delete all
@@ -182,12 +199,12 @@ terragrunt run --all destroy
 
 ### What next ?
 - observability
+- [can setup oauth integration for kubeapi and keycloak for example](./002-kubeapi-oidc/README.md)
 - can deploy argo if use argo for CD
 - setup default storageclass and setup working with persist data
 - cluster updating
 - cluster autoscaling
 - etcd backuping
-- can setup oauth integration for kubeapi and keycloak for example
 - can deploy service mesh
 - can setup rbacs, network policy
 - environments setup
